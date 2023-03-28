@@ -8,7 +8,7 @@
         "requires": [{
             "cabernet": {
                 "name": "cabernet",
-                "version": "0.9.11.0"
+                "version": "0.9.11.01"
             }
         }],
         "provider-name": "rocky4546",
