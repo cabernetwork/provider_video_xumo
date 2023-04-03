@@ -69,7 +69,7 @@ class Channels(PluginChannels):
                     groups_other = xumo_groups[channel_dict['genre'][0]['value']]
                 else:
                     # Need to replace spaces with "_" and remove special characters.
-                    self.logger.warning(
+                    self.logger.info(
                         'Missing XUMO group translation for: {}'
                         .format(channel_dict['genre'][0]['value']))
                     groups_other = self.clean_group_name(channel_dict['genre'][0]['value'])
@@ -148,5 +148,8 @@ class Channels(PluginChannels):
         if stream_url is None:
             self.logger.info('XUMO: Unable to find stream URL for program, aborting')
             return None
+
+        if self.config_obj.data[self.config_section]['player-stream_type'] == 'm3u8redirect':
+            return stream_url
 
         return self.get_best_stream(stream_url, _channel_id)
