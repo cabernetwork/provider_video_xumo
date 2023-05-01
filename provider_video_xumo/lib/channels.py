@@ -36,6 +36,9 @@ class Channels(PluginChannels):
         self.epg = EPG(_instance_obj)
 
     def get_channels(self):
+        ch_db_list = self.db.get_channels(self.plugin_obj.name, self.instance_key)
+
+    
         channels_url = ''.join([self.plugin_obj.unc_xumo_base,
                                 self.plugin_obj.unc_xumo_channels
                                .format(self.plugin_obj.geo.channelListId)])
@@ -53,13 +56,25 @@ class Channels(PluginChannels):
                                  self.instance_key))
 
         for channel_dict in ch_json['channel']['item']:
-            hd = 0
             ch_id = str(channel_dict['guid']['value'])
-            ch_callsign = channel_dict['callsign']
+            ch_db_data = ch_db_list.get(ch_id)
 
             thumbnail = self.plugin_obj.unc_xumo_icons \
                 .format(ch_id)
-            thumbnail_size = self.get_thumbnail_size(thumbnail, ch_id)
+            if ch_db_data:
+                enabled = ch_db_data[0]['enabled']
+                hd = ch_db_data[0]['json']['HD']
+                if ch_db_data[0]['json']['thumbnail'] == thumbnail:
+                    thumbnail_size = ch_db_data[0]['json']['thumbnail_size']
+                else:
+                    thumbnail_size = self.get_thumbnail_size(thumbnail, ch_id)
+            else:
+                enabled = True
+                hd = 0
+                thumbnail_size = self.get_thumbnail_size(thumbnail, ch_id)
+
+            ch_callsign = channel_dict['callsign']
+            vod = False
 
             channel = channel_dict['number']
             friendly_name = channel_dict['title']
@@ -73,14 +88,13 @@ class Channels(PluginChannels):
                         'Missing XUMO group translation for: {}'
                         .format(channel_dict['genre'][0]['value']))
                     groups_other = self.clean_group_name(channel_dict['genre'][0]['value'])
-            vod = False
             if 'properties' in channel_dict and 'has_vod' in channel_dict['properties']:
                 vod = channel_dict['properties']['has_vod'] == 'true'
             self.logger.debug("{}: Adding Channel {}"
                               .format(self.plugin_obj.name, friendly_name))
             channel = {
                 'id': ch_id,
-                'enabled': True,
+                'enabled': enabled,
                 'callsign': ch_callsign,
                 'number': channel,
                 'name': friendly_name,
