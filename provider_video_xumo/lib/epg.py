@@ -337,7 +337,7 @@ class EPG(PluginEPG):
             program['short_desc'] = listing['descriptions'][key]
 
         program['stream_url'] = None
-        if 'providers' in listing:
+        if 'providers' in listing and 'sources' in listing['providers'][0]:
             for source in listing['providers'][0]['sources']:
                 if 'drm' not in source:
                     if source['produces'] == 'application/x-mpegURL':
