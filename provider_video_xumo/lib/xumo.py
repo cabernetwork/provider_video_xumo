@@ -29,6 +29,8 @@ class XUMO(PluginObj):
 
     def __init__(self, _plugin):
         super().__init__(_plugin)
+        # create an instance is none are present
+        self.enable_instance(self.namespace, None)
         self.geo = Geo(_plugin.config_obj, self.namespace.lower())
         for inst in _plugin.instances:
             self.instances[inst] = XUMOInstance(self, inst)
