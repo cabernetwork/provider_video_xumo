@@ -42,7 +42,7 @@ class Channels(PluginChannels):
         channels_url = ''.join([self.plugin_obj.unc_xumo_base,
                                 self.plugin_obj.unc_xumo_channels
                                .format(self.plugin_obj.geo.channelListId)])
-        ch_json = self.get_uri_json_data(channels_url)
+        ch_json = self.get_uri_json_data(channels_url, 2)
         ch_list = []
         if ch_json is None or len(ch_json) == 0:
             self.logger.warning(
@@ -119,7 +119,7 @@ class Channels(PluginChannels):
                        self.plugin_obj.unc_xumo_channel
                       .format(_channel_id, start_hour)])
         time_now = time.time()
-        listing = self.get_uri_json_data(url)
+        listing = self.get_uri_json_data(url, 2)
         prog_id = None
         for prog in listing['assets']:
             if time_now < prog['timestamps']['end']:

@@ -3,7 +3,7 @@
         "id": "provider_video_xumo",
         "name": "XUMO",
         "version": {
-            "current": "0.1.09"
+            "current": "0.1.10"
         },
         "requires": [{
             "cabernet": {

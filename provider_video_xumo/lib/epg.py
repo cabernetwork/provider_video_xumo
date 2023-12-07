@@ -93,7 +93,7 @@ class EPG(PluginEPG):
                     datetime.datetime.strftime(_date_to_process, '%Y%m%d'),
                     i, offset
                     )
-                listing = self.get_uri_data(url)
+                listing = self.get_uri_data(url, 2)
                 for ch in listing['channels']:
                     chid = ch['channelId']
                     if str(chid) not in ch_list.keys():
@@ -289,7 +289,7 @@ class EPG(PluginEPG):
         url = ''.join([self.plugin_obj.unc_xumo_base,
                        self.plugin_obj.unc_xumo_program
                       .format(_prog)])
-        listing = self.get_uri_data(url)
+        listing = self.get_uri_data(url, 2)
         if listing is None:
             return program
         program['title'] = listing['title']
