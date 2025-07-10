@@ -73,7 +73,7 @@ class Channels(PluginChannels):
                 hd = 0
                 thumbnail_size = self.get_thumbnail_size(thumbnail, 2, ch_id)
 
-            ch_callsign = channel_dict['callsign']
+            ch_callsign = channel_dict['callsign'].rstrip()
             vod = False
 
             channel = channel_dict['number']
